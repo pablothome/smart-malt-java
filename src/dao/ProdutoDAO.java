@@ -11,7 +11,7 @@ import java.util.List;
 public class ProdutoDAO {
 
 	public boolean inserir(Produto produto) {
-		String sql = "INSERT INTO produto (nome_produto, marca_produto, categoria_produto, preco_produto, quantidade_estoque, estoque_minimo) VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO produto (nome_produto, marca_produto, categoria_produto, preco_produto, quantidade_estoque, estoque_minimo, ativo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		try (Connection conn = ConexaoDAO.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -21,6 +21,7 @@ public class ProdutoDAO {
 			stmt.setDouble(4, produto.getPrecoProduto());
 			stmt.setInt(5, produto.getQuantidadeEstoque());
 			stmt.setInt(6, produto.getEstoqueMinimo());
+			stmt.setBoolean(7, true);
 
 			return stmt.executeUpdate() > 0;
 
@@ -235,7 +236,7 @@ public class ProdutoDAO {
 	}
 
 	public int contarProdutos() {
-		String sql = "SELECT COUNT(*) FROM produto";
+		String sql = "SELECT COUNT(*) FROM produto WHERE ativo = true";
 
 		try (Connection conn = ConexaoDAO.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);
@@ -253,7 +254,12 @@ public class ProdutoDAO {
 	}
 
 	public int contarProdutosCriticos() {
-		String sql = "SELECT COUNT(*) FROM produto WHERE quantidade_estoque <= estoque_minimo";
+		String sql = """
+			    SELECT COUNT(*)
+			    FROM produto
+			    WHERE ativo = true
+			    AND quantidade_estoque <= estoque_minimo
+			""";
 
 		try (Connection conn = ConexaoDAO.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);

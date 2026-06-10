@@ -252,9 +252,10 @@ public class ClienteDAO {
 			return stmt.executeUpdate() > 0;
 
 		} catch (SQLException e) {
-
-			throw new RuntimeException("Erro ao excluir cliente.", e);
+		    e.printStackTrace(); // mostra o erro real no console
+		    throw new RuntimeException("Erro ao excluir cliente: " + e.getMessage(), e);
 		}
+
 	}
 
 	private Cliente mapearCliente(ResultSet rs) throws SQLException {

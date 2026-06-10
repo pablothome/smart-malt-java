@@ -82,6 +82,10 @@ public class PedidoDAO {
 	public boolean salvarPedidoCompleto(Pedido pedido, List<ItemPedido> itens) {
 		String sqlPedido = "INSERT INTO pedido (cpf_cliente, data_pedido, valor_total) VALUES (?, NOW(), ?)";
 		String sqlItem = "INSERT INTO item_pedido (id_pedido, id_produto, quantidade, preco_venda) VALUES (?, ?, ?, ?)";
+		String sqlVenda =
+			    "INSERT INTO venda " +
+			    "(cpf_cliente, id_produto, quantidade, preco_venda, total_venda, data_venda) " +
+			    "VALUES (?, ?, ?, ?, ?, NOW())";
 		String sqlBuscarEstoque = "SELECT quantidade_estoque FROM produto WHERE id_produto = ?";
 		String sqlBaixarEstoque = "UPDATE produto SET quantidade_estoque = quantidade_estoque - ? WHERE id_produto = ? AND quantidade_estoque >= ?";
 
@@ -135,6 +139,37 @@ public class PedidoDAO {
 				stmtItem.setInt(3, item.getQuantidade());
 				stmtItem.setDouble(4, item.getPrecoVenda());
 				stmtItem.executeUpdate();
+				
+				PreparedStatement stmtVenda =
+				        conn.prepareStatement(sqlVenda);
+
+				stmtVenda.setString(
+				        1,
+				        pedido.getCpfCliente()
+				);
+
+				stmtVenda.setInt(
+				        2,
+				        item.getIdProduto()
+				);
+
+				stmtVenda.setInt(
+				        3,
+				        item.getQuantidade()
+				);
+
+				stmtVenda.setDouble(
+				        4,
+				        item.getPrecoVenda()
+				);
+
+				stmtVenda.setDouble(
+				        5,
+				        item.getQuantidade()
+				                * item.getPrecoVenda()
+				);
+
+				stmtVenda.executeUpdate();
 
 				PreparedStatement stmtBaixar = conn.prepareStatement(sqlBaixarEstoque);
 				stmtBaixar.setInt(1, item.getQuantidade());

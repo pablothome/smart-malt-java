@@ -7,8 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VendaDAO {
+	
+	
 
     public boolean registrarVenda(Venda venda) {
+    	
+    	   System.out.println("=== REGISTRANDO VENDA ===");
+    	    System.out.println("Cliente: " + venda.getCpfCliente());
+    	    System.out.println("Produto: " + venda.getIdProduto());
+    	    System.out.println("Quantidade: " + venda.getQuantidade());
+
+    	    
         String sqlVenda = "INSERT INTO venda (cpf_cliente, id_produto, quantidade, preco_venda, total_venda, data_venda) VALUES (?, ?, ?, ?, ?, NOW())";
         String sqlAtualizarEstoque = "UPDATE produto SET quantidade_estoque = quantidade_estoque - ? WHERE id_produto = ? AND quantidade_estoque >= ?";
 
@@ -28,6 +37,8 @@ public class VendaDAO {
             stmtVenda.setDouble(4, venda.getPrecoVenda());
             stmtVenda.setDouble(5, venda.getTotalVenda());
 
+            System.out.println("Executando INSERT venda...");
+            
             int linhasVenda = stmtVenda.executeUpdate();
 
             if (linhasVenda == 0) {
