@@ -14,6 +14,7 @@ public class TelaEstoque extends JFrame {
     private static final long serialVersionUID = 1L;
     private JTable tabela;
     private DefaultTableModel modelo;
+    private JTextField txtBusca;
 
     public TelaEstoque() {
 
@@ -22,6 +23,30 @@ public class TelaEstoque extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        
+        
+        JPanel painelBusca = new JPanel(new BorderLayout());
+
+        JLabel lblBusca =
+                new JLabel("Buscar:");
+
+        txtBusca =
+                new JTextField();
+
+        painelBusca.add(
+                lblBusca,
+                BorderLayout.WEST
+        );
+
+        painelBusca.add(
+                txtBusca,
+                BorderLayout.CENTER
+        );
+
+        add(
+                painelBusca,
+                BorderLayout.NORTH
+        );
 
         modelo = new DefaultTableModel() {
             @Override
@@ -43,21 +68,58 @@ public class TelaEstoque extends JFrame {
 
         JScrollPane scroll = new JScrollPane(tabela);
         add(scroll, BorderLayout.CENTER);
+        
+        txtBusca.getDocument().addDocumentListener(
+                new javax.swing.event.DocumentListener() {
 
-        carregarEstoque();
+                    public void insertUpdate(
+                            javax.swing.event.DocumentEvent e
+                    ) {
+                        filtrar();
+                    }
 
+                    public void removeUpdate(
+                            javax.swing.event.DocumentEvent e
+                    ) {
+                        filtrar();
+                    }
+
+                    public void changedUpdate(
+                            javax.swing.event.DocumentEvent e
+                    ) {
+                        filtrar();
+                    }
+                }
+        );
+
+        carregarProdutos("");
         setVisible(true);
     }
+    
+  
+    
+    private void filtrar() {
 
-    private void carregarEstoque() {
+        String texto =
+                txtBusca.getText()
+                        .trim();
+
+        carregarProdutos(texto);
+    }
+    
+    
+
+    private void carregarProdutos(String filtro) {
         modelo.setRowCount(0);
 
         ProdutoController controller = new ProdutoController();
-        List<Produto> lista = controller.listarProdutos();
+        List<Produto> lista =
+                controller.buscarProdutos(filtro);
 
         NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
         for (Produto p : lista) {
+        	
             modelo.addRow(new Object[]{
                     p.getNomeProduto(),
                     p.getMarcaProduto(),

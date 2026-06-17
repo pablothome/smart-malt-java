@@ -53,4 +53,6 @@ public class ProdutoController {
 
 		return produtoDAO.buscarPorNomeMarcaCategoriaOuId(filtro);
 	}
+	
+	
 }

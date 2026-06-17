@@ -82,6 +82,48 @@ public class VendaDAO {
             }
         }
     }
+    
+    public List<Object[]> listarProdutosMaisVendidos() {
+
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql =
+        	    "SELECT " +
+        	    "p.nome_produto, " +
+        	    "SUM(v.quantidade) AS total_vendido, " +
+        	    "SUM(v.total_venda) AS faturamento " +
+        	    "FROM venda v " +
+        	    "INNER JOIN produto p ON v.id_produto = p.id_produto " +
+        	    "WHERE p.ativo = true " +
+        	    "GROUP BY p.id_produto, p.nome_produto " +
+        	    "ORDER BY total_vendido DESC";
+
+        try (
+                Connection conn = ConexaoDAO.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()
+        ) {
+
+            while (rs.next()) {
+
+                lista.add(new Object[] {
+                        rs.getString("nome_produto"),
+                        rs.getInt("total_vendido"),
+                        rs.getDouble("faturamento")
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    
+    
+    
+    
 
     public List<Venda> listarVendas() {
         List<Venda> lista = new ArrayList<>();

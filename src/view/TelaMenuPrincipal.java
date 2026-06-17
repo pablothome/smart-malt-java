@@ -39,7 +39,7 @@ public class TelaMenuPrincipal extends JFrame {
         // ==========================
         JPanel painelTopo = new JPanel(new BorderLayout());
         painelTopo.setBackground(new Color(184, 134, 11));
-        painelTopo.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        painelTopo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         ImageIcon logo =
                 new ImageIcon(
@@ -50,8 +50,8 @@ public class TelaMenuPrincipal extends JFrame {
 
         Image img =
                 logo.getImage().getScaledInstance(
-                        60,
-                        60,
+                        100,
+                        100,
                         Image.SCALE_SMOOTH
                 );
 
@@ -59,6 +59,9 @@ public class TelaMenuPrincipal extends JFrame {
                 new JLabel(
                         new ImageIcon(img)
                 );
+        
+        
+        
 
         JLabel lblTitulo =
                 new JLabel("SMARTMALTE PRO");
@@ -68,7 +71,7 @@ public class TelaMenuPrincipal extends JFrame {
                 new Font(
                         "Segoe UI",
                         Font.BOLD,
-                        32
+                        38
                 )
         );
         
@@ -78,7 +81,8 @@ public class TelaMenuPrincipal extends JFrame {
                                 FlowLayout.LEFT
                         )
                 );
-
+        
+        
         painelMarca.setOpaque(false);
 
         painelMarca.add(lblLogo);
@@ -89,22 +93,40 @@ public class TelaMenuPrincipal extends JFrame {
                 BorderLayout.WEST
         );
 
-        JPanel painelUsuario = new JPanel(new GridLayout(2, 1));
-        painelUsuario.setOpaque(false);
+        
 
         lblUsuario = new JLabel("Usuário: " + usuario.getNomeUsuario());
         lblUsuario.setForeground(Color.WHITE);
         lblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 
         lblPerfil = new JLabel("Perfil: " + usuario.getPerfil());
+        JLabel lblUsuarioMenu =
+                new JLabel(
+                        usuario.getNomeUsuario(),
+                        SwingConstants.CENTER
+                );
+
+        lblUsuarioMenu.setForeground(Color.WHITE);
+        lblUsuarioMenu.setFont(
+                new Font("Segoe UI", Font.BOLD, 14)
+        );
+
+        JLabel lblPerfilMenu =
+                new JLabel(
+                        usuario.getPerfil(),
+                        SwingConstants.CENTER
+                );
+
+        lblPerfilMenu.setForeground(
+                new Color(220,220,220)
+        );
         lblPerfil.setForeground(new Color(200, 200, 200));
         lblPerfil.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-        painelUsuario.add(lblUsuario);
-        painelUsuario.add(lblPerfil);
+        
 
         
-        painelTopo.add(painelUsuario, BorderLayout.EAST);
+      
 
         add(painelTopo, BorderLayout.NORTH);
         
@@ -117,8 +139,20 @@ public class TelaMenuPrincipal extends JFrame {
         JPanel painelCentro = new JPanel(new BorderLayout());
         painelCentro.setBackground(new Color(250, 240, 190));
         
+        JPanel painelInfoUsuario =
+                new JPanel(
+                        new GridLayout(2,1)
+                );
+
+        painelInfoUsuario.setOpaque(false);
+
+        painelInfoUsuario.add(lblUsuarioMenu);
+        painelInfoUsuario.add(lblPerfilMenu);
+        
         JButton btnProdutos = criarBotao("Produtos", "/icons/produtos.png");
+        
         JButton btnClientes = criarBotao("Clientes", "/icons/cliente.png");
+        JButton btnClientesTop = criarBotao("Clientes VIP", "/icons/rankingCliente.png");
         JButton btnEstoque = criarBotao("Estoque", "/icons/estoque.png");
         JButton btnPedidos = criarBotao("Pedidos", "/icons/pedido.png");
         JButton btnFornecedor = criarBotao("Fornecedores", "/icons/fornecedores.png");
@@ -127,12 +161,19 @@ public class TelaMenuPrincipal extends JFrame {
         JButton btnVendas = criarBotao("Vendas", "/icons/vendas.png");
         JButton btnLogout = criarBotaoSimples("Sair do Sistema",
                 new Color(192, 57, 43));
+        JButton btnMaisVendidos =
+                criarBotao(
+                        "Mais Vendidos",
+                        "/icons/rankingProduto.png"
+                );
+        
         
         painelCentro.setBackground(new Color(245, 245, 245));
 
         JPanel menuLateral = new JPanel();
         menuLateral.setBackground (Color.ORANGE);
-        menuLateral.setLayout(new GridLayout(8, 1, 10, 10));
+       
+        menuLateral.setLayout(new GridLayout(10, 1, 8, 8));
         menuLateral.setPreferredSize(new Dimension(280, 0));
         menuLateral.setBorder(
                 BorderFactory.createEmptyBorder(
@@ -142,14 +183,21 @@ public class TelaMenuPrincipal extends JFrame {
                         10
                 )
         );
-
+        
+        
         menuLateral.add(btnProdutos);
-        menuLateral.add(btnClientes);
         menuLateral.add(btnEstoque);
-        menuLateral.add(btnPedidos);
+
+        menuLateral.add(btnClientes);
         menuLateral.add(btnFornecedor);
+
+        menuLateral.add(btnPedidos);
         menuLateral.add(btnCompras);
         menuLateral.add(btnVendas);
+
+        menuLateral.add(btnMaisVendidos);
+        menuLateral.add(btnClientesTop);
+
         menuLateral.add(btnRelatorios);
 
         JPanel painelLateral = new JPanel(
@@ -166,8 +214,25 @@ public class TelaMenuPrincipal extends JFrame {
                 BorderLayout.CENTER
         );
 
-        painelLateral.add(
+        JPanel painelRodape =
+                new JPanel(
+                        new BorderLayout()
+                );
+
+        painelRodape.setOpaque(false);
+
+        painelRodape.add(
+                painelInfoUsuario,
+                BorderLayout.NORTH
+        );
+
+        painelRodape.add(
                 btnLogout,
+                BorderLayout.SOUTH
+        );
+
+        painelLateral.add(
+                painelRodape,
                 BorderLayout.SOUTH
         );
 
@@ -220,7 +285,17 @@ public class TelaMenuPrincipal extends JFrame {
         btnCompras.addActionListener(e -> abrirTelaComAtualizacao(new TelaListarCompras()));
         btnRelatorios.addActionListener(e -> abrirTelaComAtualizacao(new TelaRelatorio()));
         btnVendas.addActionListener(e -> abrirTelaComAtualizacao(new TelaListarVendas()));
-
+        btnMaisVendidos.addActionListener(
+        	    e -> abrirTelaComAtualizacao(
+        	            new TelaProdutosMaisVendidos()
+        	    )
+        	);
+        
+        btnClientesTop.addActionListener(
+                e -> abrirTelaComAtualizacao(
+                        new TelaClientesMaisCompram()
+                )
+        );
         btnLogout.addActionListener(e -> sairDoSistema());
         
         
@@ -246,6 +321,8 @@ public class TelaMenuPrincipal extends JFrame {
     }
 
     
+    
+    
     	private void sairDoSistema() {
 
     	    int opcao = JOptionPane.showConfirmDialog(
@@ -263,9 +340,9 @@ public class TelaMenuPrincipal extends JFrame {
 
     	        new TelaLogin().setVisible(true);
     	    }
-    	
-		
-	}
+    	}
+    	    
+    	   
 
 	
     private JPanel criarCard(String titulo, JLabel valorLabel, Color cor) {
@@ -278,7 +355,7 @@ public class TelaMenuPrincipal extends JFrame {
         card.setBackground(Color.WHITE);
         card.putClientProperty(
                 "JComponent.arc",
-                25
+                20
         );
 
         JPanel barra = new JPanel();
@@ -319,8 +396,8 @@ public class TelaMenuPrincipal extends JFrame {
             	ImageIcon icon = new ImageIcon(location);
 
             	Image img = icon.getImage().getScaledInstance(
-            	        32,   
-            	        32,   
+            	        80,   
+            	        80,   
             	        Image.SCALE_SMOOTH
             	);
 
@@ -334,6 +411,7 @@ public class TelaMenuPrincipal extends JFrame {
                 SwingConstants.LEFT
         );
         
+        botao.setIconTextGap(20);       
         botao.setVerticalAlignment(
                 SwingConstants.CENTER
         );
@@ -349,7 +427,8 @@ public class TelaMenuPrincipal extends JFrame {
         botao.setIconTextGap(20);
 
         botao.setBackground(
-                new Color(176, 109, 39)
+                //new Color(176, 109, 39)
+        		new Color(156, 101, 42)
         );
         
         botao.setMargin(
@@ -365,10 +444,36 @@ public class TelaMenuPrincipal extends JFrame {
         botao.setFont(
                 new Font("Segoe UI",
                         Font.BOLD,
-                        14)
-        );
+                        14
+                        )
+                );
+        
+        
+        botao.addMouseListener(
+                new java.awt.event.MouseAdapter() {
 
-        return botao;
+                    @Override
+                    public void mouseEntered(
+                            java.awt.event.MouseEvent evt
+                    ) {
+
+                        botao.setBackground(
+                                new Color(120, 72, 30)
+                        );
+                    }
+
+                    @Override
+                    public void mouseExited(
+                            java.awt.event.MouseEvent evt
+                    ) {
+
+                        botao.setBackground(
+                                new Color(141, 85, 36)
+                        );
+                    }
+                }
+        );
+		return botao;
     }
 
     
@@ -376,11 +481,13 @@ public class TelaMenuPrincipal extends JFrame {
         JButton botao = new JButton(texto);
         botao.setPreferredSize(new Dimension(200, 55));
         botao.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        botao.setBackground(cor);
+        botao.setBackground(new Color(141, 85, 36));
         botao.setForeground(Color.WHITE);
         botao.setFocusPainted(false);
         return botao;
     }
+    
+   
 
     
     private void abrirTelaComAtualizacao(JFrame tela) {

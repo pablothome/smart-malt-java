@@ -211,6 +211,44 @@ public class PedidoDAO {
 		return false;
 	}
 
+	public List<Object[]> listarClientesMaisCompram() {
+
+	    List<Object[]> lista = new ArrayList<>();
+
+	    String sql =
+	        "SELECT " +
+	        "c.nome_cliente, " +
+	        "COUNT(p.id_pedido) AS total_compras, " +
+	        "SUM(p.valor_total) AS total_gasto, " +
+	        "AVG(p.valor_total) AS ticket_medio " +
+	        "FROM pedido p " +
+	        "INNER JOIN cliente c ON p.cpf_cliente = c.cpf_cliente " +
+	        "GROUP BY c.cpf_cliente, c.nome_cliente " +
+	        "ORDER BY total_gasto DESC";
+
+	    try (
+	        Connection conn = ConexaoDAO.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        ResultSet rs = stmt.executeQuery()
+	    ) {
+
+	        while (rs.next()) {
+
+	            lista.add(new Object[] {
+	                rs.getString("nome_cliente"),
+	                rs.getInt("total_compras"),
+	                rs.getDouble("total_gasto"),
+	                rs.getDouble("ticket_medio")
+	            });
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return lista;
+	}
+	
 	public List<Pedido> listarPedidos() {
 		List<Pedido> lista = new java.util.ArrayList<>();
 

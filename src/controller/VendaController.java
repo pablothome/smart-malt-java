@@ -27,4 +27,10 @@ public class VendaController {
 	public int contarVendas() {
 		return vendaDAO.contarVendas();
 	}
+	
+	public List<Object[]> listarProdutosMaisVendidos() {
+		return vendaDAO.listarProdutosMaisVendidos();
+	}
+	
+	
 }

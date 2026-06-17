@@ -20,16 +20,26 @@ public class TelaLogin extends JFrame {
     public TelaLogin() {
 
         setTitle("SmartMalte");
-        setSize(550, 650);
+        setSize(800, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         
-        JPanel painelFundo = new JPanel(new GridBagLayout());
+        JPanel painelFundo = new JPanel(new GridBagLayout()
+        		
+        		);
+        
+        
         painelFundo.setBackground(new Color(250, 240, 190));
 //
         // Card central
         JPanel card = new JPanel();
+        card.setPreferredSize(
+                new Dimension(
+                        580,
+                        650
+                )
+        );
         card.putClientProperty(
                 "JComponent.arc",
                 25
@@ -51,8 +61,8 @@ public class TelaLogin extends JFrame {
 
             Image imagemRedimensionada =
                     logoOriginal.getImage().getScaledInstance(
-                            140,
-                            140,
+                            250,
+                            250,
                             Image.SCALE_SMOOTH
                     );
 
@@ -93,7 +103,7 @@ public class TelaLogin extends JFrame {
 
         txtLogin = new JTextField();
         txtLogin.setMaximumSize(
-                new Dimension(300, 40)
+                new Dimension(380, 42)
         );
 
         // Senha
@@ -101,7 +111,7 @@ public class TelaLogin extends JFrame {
 
         txtSenha = new JPasswordField();
         txtSenha.setMaximumSize(
-                new Dimension(300, 40)
+                new Dimension(380, 42)
         );
 
         // Botão
@@ -122,30 +132,30 @@ public class TelaLogin extends JFrame {
         );
 
         btnEntrar.setMaximumSize(
-                new Dimension(300, 45)
+                new Dimension(380, 48)
         );
 
         // Espaçamentos
         card.add(lblLogo);
-        card.add(Box.createVerticalStrut(15));
-
-        card.add(lblTitulo);
         card.add(Box.createVerticalStrut(5));
 
+        card.add(lblTitulo);
+        card.add(Box.createVerticalStrut(2));
+
         card.add(lblSubtitulo);
-        card.add(Box.createVerticalStrut(25));
+        card.add(Box.createVerticalStrut(10));
 
         card.add(lblLogin);
         card.add(Box.createVerticalStrut(5));
 
         card.add(txtLogin);
-        card.add(Box.createVerticalStrut(15));
+        card.add(Box.createVerticalStrut(10));
 
         card.add(lblSenha);
         card.add(Box.createVerticalStrut(5));
 
         card.add(txtSenha);
-        card.add(Box.createVerticalStrut(25));
+        card.add(Box.createVerticalStrut(15));
 
         card.add(btnEntrar);
 

@@ -59,4 +59,10 @@ public class PedidoController {
 
 		return pedidoDAO.salvarPedidoCompleto(pedido, itens);
 	}
+	
+	public List<Object[]> listarClientesMaisCompram() {
+	    return pedidoDAO.listarClientesMaisCompram();
+	}
+	
+	
 }
